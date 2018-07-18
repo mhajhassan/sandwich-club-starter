@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -43,7 +44,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +57,57 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
+
+        // Find the TextView with view ID origin_tv
+        TextView originTextView = findViewById(R.id.origin_tv);
+
+        // Find the TextView with view ID also_known_tv
+        TextView alsoKnownTextView = findViewById(R.id.also_known_tv);
+
+        // Find the TextView with view ID description_tv
+        TextView descriptionTextView = findViewById(R.id.description_tv);
+
+        // Find the TextView with view ID ingredients_tv
+        TextView ingredientsTextView = findViewById(R.id.ingredients_tv);
+
+        //check if origin is not empty, display origin of the current sandwich in that TextView, otherwise show no data available text
+        if (!sandwich.getPlaceOfOrigin().isEmpty()) {
+            originTextView.setText(sandwich.getPlaceOfOrigin());
+        } else {
+            originTextView.setText(R.string.no_data_available);
+        }
+
+        //check if description is not empty, display description of the current sandwich in that TextView, otherwise show no data available text
+        if (!sandwich.getDescription().isEmpty()) {
+            descriptionTextView.setText(sandwich.getDescription());
+        } else {
+            descriptionTextView.setText(R.string.no_data_available);
+        }
+
+        //check if AlsoKnownAs is not empty, display AlsoKnownAs of the current sandwich in that TextView, otherwise show no data available text
+        if (sandwich.getAlsoKnownAs().size() > 0) {
+            // add all elements in one string and append them with (", ")
+            StringBuilder knownAsText = new StringBuilder();
+            for (String element : sandwich.getAlsoKnownAs()) {
+                knownAsText.append(element).append(", ");
+            }
+            alsoKnownTextView.setText(knownAsText.toString());
+        } else {
+            alsoKnownTextView.setText(R.string.no_data_available);
+        }
+
+        //check if ingredients is not empty, display ingredients of the current sandwich in that TextView, otherwise show no data available text
+        if (sandwich.getIngredients().size() > 0) {
+            // add all elements in one string and append them with (", ")
+            StringBuilder ingredientsText = new StringBuilder();
+            for (String element : sandwich.getIngredients()) {
+                ingredientsText.append(element).append(", ");
+            }
+            ingredientsTextView.setText(ingredientsText.toString());
+        } else {
+            ingredientsTextView.setText(R.string.no_data_available);
+        }
 
     }
 }
